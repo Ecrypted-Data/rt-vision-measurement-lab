@@ -10,7 +10,7 @@
 python3 -m lab.check_inputs
 ```
 
-如果现有环境缺少依赖，可在仓库根目录准备一个项目环境。
+如果现有环境缺少依赖，可在仓库根目录准备一个项目环境。WSL Ubuntu 若提示缺少 `ensurepip`，先安装 `python3-venv`。
 
 ```bash
 python3 -m venv .venv
@@ -30,4 +30,4 @@ python -m lab.check_inputs
 | 用两辆车验证黑屏期间及恢复后的估计 | [任务二](task2/) |
 | 读取视频、标定和逐帧检测框 | [素材读取模块](lab/inputs.py) |
 
-`assets/` 是仓库提供的素材。运行和生成的中间文件放到 `work/`。把需要提交的影像、表格和说明放到 `results/` 或在自己的 README 中给出清楚的访问链接。最后提交工作分支或 PR 链接。
+[素材清单](assets/)列出了棋盘格与白车示范的输入及两项任务的数据。运行和生成的中间文件放到 `work/`。把需要提交的影像、表格和说明放到 `results/` 或在自己的 README 中给出清楚的访问链接。最后提交工作分支或 PR 链接。
