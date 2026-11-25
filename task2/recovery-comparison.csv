@@ -1,0 +1,3 @@
+setting,case,frame,pred_x_px,pred_y_px,obs_x_px,obs_y_px,corrected_x_px,corrected_y_px,selected_for_b
+1,a,20,,,,,,,
+2,a,20,,,,,,,

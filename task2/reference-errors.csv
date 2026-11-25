@@ -1,0 +1,7 @@
+case,frame,stage,manual_x_px,manual_y_px,direct_error_px,ema_error_px,kalman_error_px
+a,14,blackout,,,,,
+a,18,blackout,,,,,
+a,20,recovery,,,,,
+b,12,blackout,,,,,
+b,16,blackout,,,,,
+b,18,recovery,,,,,

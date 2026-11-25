@@ -1,16 +1,21 @@
 # RT 视觉测量与状态估计
 
-这是视觉组本节培训的起始仓库。仓库提供实拍素材、相机标定、车辆候选框和数据读入代码。需要完成的两项任务分别是棋盘格视频中的立方体投影，以及短时黑屏后的车辆追踪。
+本节的两项任务共用这个仓库。任务一在实拍棋盘格视频上叠加立方体并测距，任务二在车流片段中估计指定车辆的轨迹。
 
 ## 开始练习
 
-先 Fork 本仓库，克隆自己的 Fork 后，在仓库的根目录新建工作分支。已经能在 WSL 的 Python 中导入 OpenCV 和 NumPy 时，直接运行素材检查。
+1. 用你的 GitHub 账号打开仓库并 Fork，再在 WSL Ubuntu 中克隆自己的 Fork。
+2. 进入仓库根目录，按下方说明检查素材。
+3. 按[《开发管理》](https://gcnhkq914dqv.feishu.cn/wiki/Joxswv4PziPcdCkVL0McQKnhnAg)创建工作分支。
+
+已有能运行 OpenCV、NumPy 和 Matplotlib 的 Python 环境可以继续使用。
 
 ```bash
+python3 -c "import cv2, numpy, matplotlib"
 python3 -m lab.check_inputs
 ```
 
-如果现有环境缺少依赖，可在仓库根目录准备一个项目环境。WSL Ubuntu 若提示缺少 `ensurepip`，先安装 `python3-venv`。
+缺少依赖时，可以用项目虚拟环境安装。WSL Ubuntu 若提示缺少 `ensurepip`，先安装 `python3-venv`。
 
 ```bash
 python3 -m venv .venv
@@ -19,15 +24,13 @@ python -m pip install -r requirements.txt
 python -m lab.check_inputs
 ```
 
-通过时会看到任务一的 264 帧和两张棋盘格验收帧，以及任务二的 A、B 两段各 8 帧的黑屏检查。检查命令只检验素材和读入流程。每项任务的实现和结果需要自行完成。
+检查通过时，可读取任务一的 264 帧和两张验收帧，并能解包、读取任务二两个片段及其各 8 帧连续黑屏。检查命令验证素材与读取入口。
 
-## 从哪里开始
+## 任务与素材
 
-| 用途 | 入口 |
-| --- | --- |
-| 了解算法并跟做示范 | [飞书《视觉测量与状态估计》](https://gcnhkq914dqv.feishu.cn/wiki/Jyb1we3zQiWfZlk3G8ucBJgFnbg) |
-| 在棋盘格视频中动态叠加立方体 | [任务一](task1/) |
-| 用两辆车验证黑屏期间及恢复后的估计 | [任务二](task2/) |
-| 读取视频、标定和逐帧检测框 | [素材读取模块](lab/inputs.py) |
+- [飞书《视觉测量与状态估计》](https://gcnhkq914dqv.feishu.cn/wiki/Jyb1we3zQiWfZlk3G8ucBJgFnbg)可先阅读原理和实拍示范，从「三、培训任务」开始动手。
+- [任务一及测量记录模板](task1/)
+- [任务二及验收记录模板](task2/)
+- [素材清单](assets/)和[素材读取模块](lab/inputs.py)
 
-[素材清单](assets/)列出了棋盘格与白车示范的输入及两项任务的数据。运行和生成的中间文件放到 `work/`。把需要提交的影像、表格和说明放到 `results/` 或在自己的 README 中给出清楚的访问链接。最后提交工作分支或 PR 链接。
+运行产物可放在本地的 `work/`。在你自己的 README 中说明使用的输入、复跑命令和结果。需提交的文件可放到 `results/` 或给出评审人可直接访问的链接。最后提交工作分支链接。

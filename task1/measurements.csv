@@ -1,0 +1,4 @@
+source_frame,time_s,square_size_mm,optical_depth_m,straight_distance_m,distance_minus_depth_m,reprojection_rmse_px
+180,7.5,20,,,,
+420,17.5,20,,,,
+420,17.5,40,,,,
