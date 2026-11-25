@@ -4,22 +4,23 @@ import argparse
 import sys
 
 import cv2
-import numpy as np
 
 from .inputs import (
     BOARD_CHECK_FRAMES, BOARD_START, BOARD_STOP, board_frames,
-    load_calibration, vehicle_case_files, vehicle_frames,
+    vehicle_case_files, vehicle_frames,
 )
 
 
 def check_board():
-    calibration = load_calibration()
-    if calibration.image_size != (640, 360) or not np.isclose(calibration.square_size_m, 0.020):
-        raise ValueError("任务一应使用配套的 640×360 标定与 20 mm 标注格长")
+    selected_for_calibration = sum(1 for _ in board_frames(0, BOARD_START))
+    if selected_for_calibration != BOARD_START:
+        raise ValueError("标定取材的前 7 秒视频缺帧")
     seen = []
     count = 0
     for index, time_s, image in board_frames():
         count += 1
+        if image.shape[:2] != (360, 640):
+            raise ValueError(f"棋盘格第 {index} 帧尺寸不是 640×360")
         if index in BOARD_CHECK_FRAMES:
             gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             found, corners = cv2.findChessboardCornersSB(gray, (9, 6))
@@ -28,7 +29,7 @@ def check_board():
             seen.append(f"{time_s:.1f} 秒")
     if count != BOARD_STOP - BOARD_START or len(seen) != len(BOARD_CHECK_FRAMES):
         raise ValueError("棋盘格片段缺帧")
-    print(f"任务一通过：{count} 帧可读取；{'、'.join(seen)}分别找到 54 个内角点")
+    print(f"任务一通过：标定取材 {selected_for_calibration} 帧和回放 {count} 帧可读取；{'、'.join(seen)}分别找到 54 个内角点")
 
 
 def check_vehicle(case: str, count: int, hidden: range):

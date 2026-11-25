@@ -14,7 +14,6 @@ ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
 WORK = ROOT / "work"
 BOARD_VIDEO = ASSETS / "chessboard_104435_preview.mp4"
-CALIBRATION = ASSETS / "task1_camera.npz"
 VEHICLE_ARCHIVE = ASSETS / "task2_vehicle_materials.zip"
 
 BOARD_START = 168
@@ -50,8 +49,9 @@ class TrackingFrame:
     candidates: tuple[Detection, ...]
 
 
-def load_calibration() -> Calibration:
-    with np.load(CALIBRATION, allow_pickle=False) as data:
+def load_calibration(path: str | Path) -> Calibration:
+    """读取学员提供的相机内参、畸变系数和标定尺寸。"""
+    with np.load(path, allow_pickle=False) as data:
         matrix = data["K"]
         distortion = data["dist"]
         width, height = (int(value) for value in data["image_size"])
@@ -65,7 +65,6 @@ def load_calibration() -> Calibration:
 
 def board_frames(start: int = BOARD_START, stop: int = BOARD_STOP):
     """依次返回原片帧号、秒数、BGR 图像。stop 为结束后的帧号。"""
-    calibration = load_calibration()
     video = cv2.VideoCapture(str(BOARD_VIDEO))
     try:
         if not video.isOpened():
@@ -77,8 +76,6 @@ def board_frames(start: int = BOARD_START, stop: int = BOARD_STOP):
             ok, frame = video.read()
             if not ok:
                 raise ValueError(f"棋盘格第 {index} 帧无法解码")
-            if (frame.shape[1], frame.shape[0]) != calibration.image_size:
-                raise ValueError(f"棋盘格第 {index} 帧无法解码或尺寸与标定不符")
             yield index, index / fps, frame
     finally:
         video.release()
@@ -90,7 +87,7 @@ def vehicle_case_files(case: str) -> Path:
         raise ValueError("片段编号使用 a 或 b")
     folder = WORK / "vehicle_inputs"
     folder.mkdir(parents=True, exist_ok=True)
-    suffixes = ("blackout.mp4", "clean.mp4", "target.png", "frames.csv", "candidates.csv")
+    suffixes = ("blackout.mp4", "clean.mp4", "frames.csv", "candidates.csv")
     with ZipFile(VEHICLE_ARCHIVE) as archive:
         for suffix in suffixes:
             name = f"{case}_{suffix}"
